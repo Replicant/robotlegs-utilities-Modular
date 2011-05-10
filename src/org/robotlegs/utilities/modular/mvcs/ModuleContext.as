@@ -92,7 +92,7 @@ package org.robotlegs.utilities.modular.mvcs
         
         public function ModuleContext(contextView:DisplayObjectContainer=null, autoStartup:Boolean=true, parentInjector:IInjector = null, applicationDomain:ApplicationDomain = null)
         {
-            _applicationDomain = applicationDomain || ApplicationDomain.currentDomain;
+			_applicationDomain = applicationDomain || ApplicationDomain.currentDomain;
             if(parentInjector)
             {
                 _injector = parentInjector.createChild(_applicationDomain);
@@ -103,8 +103,10 @@ package org.robotlegs.utilities.modular.mvcs
         override protected function mapInjections():void
         {
             super.mapInjections();
-            initializeModuleEventDispatcher();
-            injector.mapValue(IModuleCommandMap, moduleCommandMap);
+			if( !injector.hasMapping(IModuleCommandMap) ) {
+				initializeModuleEventDispatcher();
+				injector.mapValue(IModuleCommandMap, moduleCommandMap);
+			}
         }
         
         protected function initializeModuleEventDispatcher():void
